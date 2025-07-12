@@ -1,1 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>じゃんけんアプリ</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>じゃんけんゲーム</h1>
+  <div id="game">
+    <button onclick="play('グー')">✊ グー</button>
+    <button onclick="play('チョキ')">✌️ チョキ</button>
+    <button onclick="play('パー')">✋ パー</button>
+  </div>
+  <p id="result"></p>
+  <script src="script.js"></script>
+</body>
+</html>
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 20px;
+}
+
+#game button {
+  padding: 10px 20px;
+  margin: 5px;
+  font-size: 16px;
+}
+function play(userChoice) {
+  const choices = ['グー', 'チョキ', 'パー'];
+  const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+  let result;
+
+  if (userChoice === computerChoice) {
+    result = '引き分け！';
+  } else if (
+    (userChoice === 'グー' && computerChoice === 'チョキ') ||
+    (userChoice === 'チョキ' && computerChoice === 'パー') ||
+    (userChoice === 'パー' && computerChoice === 'グー')
+  ) {
+    result = 'あなたの勝ち！ 🎉';
+  } else {
+    result = 'コンピュータの勝ち！ 💻';
+  }
+
+  document.getElementById('result').textContent = 
+    `あなた: ${userChoice}, コンピュータ: ${computerChoice} -> ${result}`;
+}
+{
+  "name": "じゃんけんアプリ",
+  "short_name": "じゃんけん",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "description": "シンプルなじゃんけんPWAアプリ",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open('janken-cache').then(cache => 
+      cache.addAll(['./index.html', './styles.css', './script.js'])
+    )
+  );
+});
+
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request).then(response => 
+      response || fetch(event.request)
+    )
+  );
+});
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./service-worker.js')
+    .then(() => console.log('Service Worker登録成功！'))
+    .catch(err => console.error('Service Worker登録失敗:', err));
+}
+
+
+
 
