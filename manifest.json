@@ -2,7 +2,7 @@
   "name": "じゃんけんアプリ",
   "short_name": "じゃんけん",
   "start_url": "./index.html",
-  "display": "Copilot_20250712_230611.png",
+  "display": "standalone",
   "background_color": "#ffffff",
   "description": "シンプルなじゃんけんPWAアプリ",
   "icons": [
